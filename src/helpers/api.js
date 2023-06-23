@@ -1,0 +1,1 @@
+export const baseURL = 'https://projects.juliandavid.me/server/api';
