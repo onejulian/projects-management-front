@@ -337,7 +337,7 @@ async function getMyProjects() {
   const response = await projectsService.getMyProjects();
   if (!response || response.status === 401) {
     localStorage.removeItem("token");
-    router.push("/login");
+    router.push("login");
     return;
   }
   projects.value = response.data;
