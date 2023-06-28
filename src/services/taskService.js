@@ -1,4 +1,5 @@
 import interceptor from '../helpers/interceptor';
+import handleErrors from '../helpers/error';
 
 const taskService = {
     async createTask(task) {
@@ -7,6 +8,7 @@ const taskService = {
             return response;
         }
         catch (error) {
+            handleErrors(error);
             return error.response;
         }
     },
@@ -16,6 +18,7 @@ const taskService = {
             return response;
         }
         catch (error) {
+            handleErrors(error);
             return error.response;
         }
     },
@@ -25,6 +28,7 @@ const taskService = {
             return response;
         }
         catch (error) {
+            handleErrors(error);
             return error.response;
         }
     },
@@ -34,6 +38,7 @@ const taskService = {
             return response;
         }
         catch (error) {
+            handleErrors(error);
             return error.response;
         }
     }

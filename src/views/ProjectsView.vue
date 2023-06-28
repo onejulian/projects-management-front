@@ -26,11 +26,25 @@
       otros proyectos
     </div>
   </div>
-  <div class="flex justify-evenly">
-    <button class="button-sort" type="button" @click="sortProjectsByStartDate">
+  <div
+    class="flex justify-evenly"
+    v-if="projects.length > 1 && myProjectsWindow"
+  >
+    <button class="button-sort-project" type="button" @click="sortProjectsByStartDate">
       Ordenar por fecha inicial
     </button>
-    <button class="button-sort" type="button" @click="sortProjectsByEndDate">
+    <button class="button-sort-project" type="button" @click="sortProjectsByEndDate">
+      Ordenar por fecha final
+    </button>
+  </div>
+  <div
+    class="flex justify-evenly"
+    v-if="otherProjects.length > 1 && !myProjectsWindow"
+  >
+    <button class="button-sort-project" type="button" @click="sortProjectsByStartDate">
+      Ordenar por fecha inicial
+    </button>
+    <button class="button-sort-project" type="button" @click="sortProjectsByEndDate">
       Ordenar por fecha final
     </button>
   </div>
@@ -131,14 +145,14 @@
       <div class="mt-2 flex flex-col items-center">
         Tareas
         <span v-if="tasks.length === 0">No hay tareas de momento</span>
-        <div class="flex justify-evenly px-4">
-          <button type="button" @click="sortByPending" class="button-sort">
+        <div class="flex justify-evenly px-4" v-if="tasks.length > 1">
+          <button type="button" @click="sortByPending" class="button-sort-task">
             Pendientes
           </button>
-          <button type="button" @click="sortByInProgress" class="button-sort">
+          <button type="button" @click="sortByInProgress" class="button-sort-task">
             En progreso
           </button>
-          <button type="button" @click="sortByCompleted" class="button-sort">
+          <button type="button" @click="sortByCompleted" class="button-sort-task">
             Completadas
           </button>
         </div>
@@ -223,6 +237,7 @@
       <div class="flex justify-center pt-7">
         <CreateAssingment
           @closeModal="toggleModalCreateAssingment"
+          @showAssignments="getAssignments(project.id)"
           :projectId="project.id"
         />
       </div>
@@ -364,33 +379,49 @@ async function getAssignments(projectId) {
   assignments.value = response.data;
 }
 
+const orderIsAsc = ref(true);
+
 function sortProjectsByStartDate() {
-  projects.value.sort((a, b) => {
-    return new Date(a.date_init) - new Date(b.date_init);
-  });
-  otherProjects.value.sort((a, b) => {
-    return new Date(a.date_init) - new Date(b.date_init);
-  });
+  if (orderIsAsc.value) {
+    projects.value.sort((a, b) => {
+      return new Date(a.date_init) - new Date(b.date_init);
+    });
+    otherProjects.value.sort((a, b) => {
+      return new Date(a.date_init) - new Date(b.date_init);
+    });
+  } else {
+    projects.value.sort((a, b) => {
+      return new Date(b.date_init) - new Date(a.date_init);
+    });
+    otherProjects.value.sort((a, b) => {
+      return new Date(b.date_init) - new Date(a.date_init);
+    });
+  }
+  orderIsAsc.value = !orderIsAsc.value;
 }
 
 function sortProjectsByEndDate() {
-  projects.value.sort((a, b) => {
-    return new Date(a.date_end) - new Date(b.date_end);
-  });
-  otherProjects.value.sort((a, b) => {
-    return new Date(a.date_end) - new Date(b.date_end);
-  });
+  if (orderIsAsc.value) {
+    projects.value.sort((a, b) => {
+      return new Date(a.date_end) - new Date(b.date_end);
+    });
+    otherProjects.value.sort((a, b) => {
+      return new Date(a.date_end) - new Date(b.date_end);
+    });
+  } else {
+    projects.value.sort((a, b) => {
+      return new Date(b.date_init) - new Date(a.date_init);
+    });
+    otherProjects.value.sort((a, b) => {
+      return new Date(b.date_init) - new Date(a.date_init);
+    });
+  }
+  orderIsAsc.value = !orderIsAsc.value;
 }
-
-const statusMap = {
-  pending: 1,
-  in_progress: 2,
-  completed: 3,
-};
 
 function sortByPending() {
   tasks.value.sort((a, b) => {
-    if (a.state === "pending" ) {
+    if (a.state === "pending") {
       return -1;
     }
     if (b.state === "pending") {
@@ -401,7 +432,7 @@ function sortByPending() {
 
 function sortByInProgress() {
   tasks.value.sort((a, b) => {
-    if (a.state === "in_progress" ) {
+    if (a.state === "in_progress") {
       return -1;
     }
     if (b.state === "in_progress") {
@@ -412,7 +443,7 @@ function sortByInProgress() {
 
 function sortByCompleted() {
   tasks.value.sort((a, b) => {
-    if (a.state === "completed" ) {
+    if (a.state === "completed") {
       return -1;
     }
     if (b.state === "completed") {
@@ -534,7 +565,19 @@ onMounted(() => {
   @apply mt-4 flex justify-evenly top-[48px] sticky;
 }
 
-.button-sort {
+.button-sort-task {
+  @apply bg-gray-200
+        rounded-md
+        px-3
+        py-1
+        mt-6
+        mx-2
+        text-xs
+        text-center
+        cursor-pointer
+        hover:bg-gray-300;
+}
+.button-sort-project {
   @apply bg-gray-200
         rounded-md
         px-3

@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { baseURL } from '../helpers/api';
+import handleErrors from '../helpers/error';
 
 const registerService = {
     async register(email, password, name) {
@@ -11,6 +12,7 @@ const registerService = {
             });
             return response;
         } catch (error) {
+            handleErrors(error);
             return error.response;
         }
     }

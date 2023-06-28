@@ -1,4 +1,5 @@
 import interceptor from '../helpers/interceptor';
+import handleErrors from '../helpers/error';
 
 const projectService = {
     async createProject(project) {
@@ -7,6 +8,7 @@ const projectService = {
             return response;
         }
         catch (error) {
+            handleErrors(error);
             return error.response;
         }
     },
@@ -16,6 +18,7 @@ const projectService = {
             return response;
         }
         catch (error) {
+            handleErrors(error);
             return error.response;
         }
     },
@@ -25,6 +28,7 @@ const projectService = {
             return response;
         }
         catch (error) {
+            handleErrors(error);
             return error.response;
         }
     },
@@ -34,6 +38,7 @@ const projectService = {
             return response;
         }
         catch (error) {
+            handleErrors(error);
             return error.response;
         }
     },
@@ -43,6 +48,7 @@ const projectService = {
             return response;
         }
         catch (error) {
+            handleErrors(error);
             return error.response;
         }
     },
@@ -52,6 +58,7 @@ const projectService = {
             return response;
         }
         catch (error) {
+            handleErrors(error);
             return error.response;
         }
     },
@@ -61,6 +68,7 @@ const projectService = {
             return response;
         }
         catch (error) {
+            handleErrors(error);
             return error.response;
         }
     }

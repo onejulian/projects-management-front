@@ -71,6 +71,15 @@ export default {
       }
 
       userService.searchUser(this.state.email).then((response) => {
+        if (response.status == 400) {
+          Swal.fire({
+            icon: "error",
+            title: "Usuario no encontrado",
+            text: "El usuario no se encuentra registrado en la plataforma",
+          });
+          return;
+        }
+
         this.state.user_id = response.data.id;
         const assignment = {
           project_id: `${this.props.projectId}`,

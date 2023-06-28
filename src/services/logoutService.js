@@ -1,4 +1,5 @@
 import interceptor from '../helpers/interceptor';
+import handleErrors from '../helpers/error';
 
 const logoutService = {
     async logout() {
@@ -7,6 +8,7 @@ const logoutService = {
             return response;
         }
         catch (error) {
+            handleErrors(error);
             return error.response;
         }
     }

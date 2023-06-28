@@ -106,6 +106,15 @@ export default {
       date_end: props.date_end,
     });
 
+    const endDateMustBeGreaterThanInitDate = (value) => {
+      if (value) {
+        const date_init = new Date(state.date_init);
+        const date_end = new Date(value);
+        return date_end > date_init;
+      }
+      return true;
+    };
+
     const rules = computed(() => {
       return {
         title: {
@@ -127,6 +136,10 @@ export default {
           required: helpers.withMessage(
             "La fecha de finalización es requerida",
             required
+          ),
+          endDateMustBeGreaterThanInitDate: helpers.withMessage(
+            "La fecha de finalización debe ser mayor a la fecha de inicio",
+            endDateMustBeGreaterThanInitDate
           ),
         },
       };
